@@ -8,26 +8,28 @@ class StatisticMultiset {
 private:
   std::multiset<int> list;
 public:
+  StatisticMultiset() = default;
+  ~StatisticMultiset() = default;
   // Добавляет число в набор.
   void AddNum( int num ) {
     list.insert(num);
   };
   // Максимальное число в наборе.
-  int GetMax()
+  int GetMax() const
   {
     std::multiset<int>::const_reverse_iterator it = list.crbegin();;
 
     return *it;
   };
   // Минимальное число в наборе.
-  int GetMin()
+  int GetMin() const
   {
     std::multiset<int>::const_iterator it = list.cbegin();
 
     return *it;
   };
   // Среднее арифметическое всего набора.
-  float GetAvg()
+  float GetAvg() const
   {
     int sum = 0;
 
@@ -38,7 +40,7 @@ public:
     return sum / list.size();
   };
   // Кол-во чисел в наборе меньше заданного порога.
-  int GetCountUnder( float threshold )
+  int GetCountUnder( float threshold ) const
   {
     int i = 0;
 
@@ -53,7 +55,7 @@ public:
     return i;
   };
   // Кол-во чисел в наборе больше заданного порога.
-  int GetCountAbove( float threshold )
+  int GetCountAbove( float threshold ) const
   {
     int i = 0;
 
@@ -68,7 +70,7 @@ public:
     return i;
   };
 
-  std::multiset<int> Get()
+  std::multiset<int> Get() const
   {
     return list;
   }
