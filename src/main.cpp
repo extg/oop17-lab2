@@ -15,16 +15,18 @@ int main() {
   ms.AddNum( 24 );
   ms.AddNum( 58 );
 
+  std::vector<int> somedata = { 10, 40, 6, 87 };
+
+  ms.AddNum(somedata);
+
   cout << " Min: " << ms.GetMin() << endl;
   cout << " Avg: " << ms.GetAvg() << endl;
   cout << " Max: " << ms.GetMax() << endl;
   cout << " GetCountUnder(50): " << ms.GetCountUnder(50) << endl;
   cout << " GetCountAbove(50): " << ms.GetCountAbove(50) << endl;
 
-  multiset<int> mlt = ms.Get();
-
-  for (multiset<int>::const_iterator i(mlt.begin()), end(mlt.end()); i != end; ++i) {
-    std::cout << *i << " ";
+  for (auto it: ms.Get()) {
+    std::cout << it << " ";
   }
 
   return 0;

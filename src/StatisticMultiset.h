@@ -3,6 +3,9 @@
 
 
 #include <set>
+#include <list>
+#include <vector>
+#include <fstream>
 
 class StatisticMultiset {
 private:
@@ -10,10 +13,42 @@ private:
 public:
   StatisticMultiset() = default;
   ~StatisticMultiset() = default;
+
   // Добавляет число в набор.
   void AddNum( int num ) {
     list.insert(num);
   };
+
+  void AddNum( const std::multiset<int>& numbers )
+  {
+    for (auto &it : numbers) {
+      list.insert(it);
+    }
+  };
+
+  void AddNum( const std::vector<int>& numbers )
+  {
+    for (auto &it : numbers) {
+      list.insert(it);
+    }
+  };
+
+  void AddNum( const std::list<int>& numbers )
+  {
+    for (auto &it : numbers) {
+      list.insert(it);
+    }
+  };
+
+  void AddNumsFromFile( const char* filename )
+  {
+    std::ifstream infile(filename);
+    for( std::string line; getline( infile, line ); )
+    {
+      list.insert(stoi(line));
+    }
+  };
+
   // Максимальное число в наборе.
   int GetMax() const
   {
@@ -21,6 +56,7 @@ public:
 
     return *it;
   };
+
   // Минимальное число в наборе.
   int GetMin() const
   {
@@ -28,6 +64,7 @@ public:
 
     return *it;
   };
+
   // Среднее арифметическое всего набора.
   float GetAvg() const
   {
@@ -39,6 +76,7 @@ public:
 
     return sum / list.size();
   };
+
   // Кол-во чисел в наборе меньше заданного порога.
   int GetCountUnder( float threshold ) const
   {
@@ -54,6 +92,7 @@ public:
 
     return i;
   };
+
   // Кол-во чисел в наборе больше заданного порога.
   int GetCountAbove( float threshold ) const
   {
