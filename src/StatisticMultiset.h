@@ -6,6 +6,9 @@
 #include <list>
 #include <vector>
 #include <fstream>
+#include <iostream>
+
+// TODO: может написать функции мемонизации https://gist.github.com/okaram/4179787
 
 template<class T>
 class StatisticMultiset {
@@ -144,7 +147,7 @@ public:
     std::ifstream infile(filename);
     for( std::string line; getline( infile, line ); )
     {
-      // TODO: T
+      // TODO: T https://codereview.stackexchange.com/questions/60038/converting-a-string-to-various-number-formats
       list.insert(stoi(line));
     }
 
@@ -183,13 +186,21 @@ public:
   // Кол-во чисел в наборе меньше заданного порога.
   int GetCountUnder( float threshold ) const
   {
-    return is_under_outdated ? CountUnder(threshold) : under;
+    static float last_threshold = threshold;
+
+    return is_under_outdated || last_threshold != threshold
+           ? CountUnder(threshold)
+           : under;
   };
 
   // Кол-во чисел в наборе больше заданного порога.
   int GetCountAbove( float threshold ) const
   {
-    return is_above_outdated ? CountAbove(threshold) : above;
+    static float last_threshold = threshold;
+
+    return is_above_outdated || last_threshold != threshold
+           ? CountAbove(threshold)
+           : above;
   };
 
   std::multiset<int> Get() const
