@@ -7,14 +7,15 @@
 #include <vector>
 #include <fstream>
 
+template<class T>
 class StatisticMultiset {
 private:
-  std::multiset<int> list;
-  mutable int min;
-  mutable int max;
+  std::multiset<T> list;
+  mutable T min;
+  mutable T max;
   mutable float avg;
-  mutable int under;
-  mutable int above;
+  mutable T under;
+  mutable T above;
   mutable bool is_max_outdated = true;
   mutable bool is_min_outdated = true;
   mutable bool is_avg_outdated = true;
@@ -22,7 +23,7 @@ private:
   mutable bool is_above_outdated = true;
 
   // Максимальное число в наборе.
-  int Max() const
+  T Max() const
   {
     is_max_outdated = false;
     max = *(list.crbegin());
@@ -31,7 +32,7 @@ private:
   };
 
   // Минимальное число в наборе.
-  int Min() const
+  T Min() const
   {
     is_min_outdated = false;
     min = *(list.cbegin());
@@ -143,6 +144,7 @@ public:
     std::ifstream infile(filename);
     for( std::string line; getline( infile, line ); )
     {
+      // TODO: T
       list.insert(stoi(line));
     }
 
@@ -161,13 +163,13 @@ public:
   };
 
   // Максимальное число в наборе.
-  int GetMax() const
+  T GetMax() const
   {
     return is_max_outdated ? Max() : max;
   };
 
   // Минимальное число в наборе.
-  int GetMin() const
+  T GetMin() const
   {
     return is_min_outdated ? Min() : min;
   };

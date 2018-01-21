@@ -6,7 +6,7 @@ using namespace std;
 int main() {
   cout << "Lab 02" << endl;
 
-  StatisticMultiset ms1;
+  StatisticMultiset<int> ms1;
 
   ms1.AddNum( 89 );
   ms1.AddNum( 54 );
@@ -15,11 +15,11 @@ int main() {
   ms1.AddNum( 24 );
   ms1.AddNum( 58 );
 
-  StatisticMultiset ms2;
+  StatisticMultiset<int> ms2;
   std::vector<int> somedata = { 10, 40, 6, 87 };
   ms2.AddNum( somedata );
 
-  StatisticMultiset ms3;
+  StatisticMultiset<int> ms3;
 
   ms3.AddNums(ms1);
   ms3.AddNums(ms2);
