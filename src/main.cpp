@@ -6,26 +6,31 @@ using namespace std;
 int main() {
   cout << "Lab 02" << endl;
 
-  StatisticMultiset ms;
+  StatisticMultiset ms1;
 
-  ms.AddNum( 89 );
-  ms.AddNum( 54 );
-  ms.AddNum( 54 );
-  ms.AddNum( 24 );
-  ms.AddNum( 24 );
-  ms.AddNum( 58 );
+  ms1.AddNum( 89 );
+  ms1.AddNum( 54 );
+  ms1.AddNum( 54 );
+  ms1.AddNum( 24 );
+  ms1.AddNum( 24 );
+  ms1.AddNum( 58 );
 
+  StatisticMultiset ms2;
   std::vector<int> somedata = { 10, 40, 6, 87 };
+  ms2.AddNum( somedata );
 
-  ms.AddNum(somedata);
+  StatisticMultiset ms3;
 
-  cout << " Min: " << ms.GetMin() << endl;
-  cout << " Avg: " << ms.GetAvg() << endl;
-  cout << " Max: " << ms.GetMax() << endl;
-  cout << " GetCountUnder(50): " << ms.GetCountUnder(50) << endl;
-  cout << " GetCountAbove(50): " << ms.GetCountAbove(50) << endl;
+  ms3.AddNums(ms1);
+  ms3.AddNums(ms2);
 
-  for (auto it: ms.Get()) {
+  cout << " Min: " << ms3.GetMin() << endl;
+  cout << " Avg: " << ms3.GetAvg() << endl;
+  cout << " Max: " << ms3.GetMax() << endl;
+  cout << " GetCountUnder(50): " << ms3.GetCountUnder(50) << endl;
+  cout << " GetCountAbove(50): " << ms3.GetCountAbove(50) << endl;
+
+  for (auto it: ms3.Get()) {
     std::cout << it << " ";
   }
 

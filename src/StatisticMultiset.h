@@ -49,6 +49,15 @@ public:
     }
   };
 
+  void AddNums( const StatisticMultiset& a_stat_set )
+  {
+    if (this != &a_stat_set) {
+      for (auto it: a_stat_set.Get()) {
+        list.insert(it);
+      }
+    }
+  };
+
   // Максимальное число в наборе.
   int GetMax() const
   {
