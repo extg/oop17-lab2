@@ -10,13 +10,105 @@
 class StatisticMultiset {
 private:
   std::multiset<int> list;
+  mutable int min;
+  mutable int max;
+  mutable float avg;
+  mutable int under;
+  mutable int above;
+  mutable bool is_max_outdated = true;
+  mutable bool is_min_outdated = true;
+  mutable bool is_avg_outdated = true;
+  mutable bool is_under_outdated = true;
+  mutable bool is_above_outdated = true;
+
+  // Максимальное число в наборе.
+  int Max() const
+  {
+    is_max_outdated = false;
+    max = *(list.crbegin());
+
+    return max;
+  };
+
+  // Минимальное число в наборе.
+  int Min() const
+  {
+    is_min_outdated = false;
+    min = *(list.cbegin());
+
+    return min;
+  };
+
+  // Среднее арифметическое всего набора.
+  float Avg() const
+  {
+    int sum = 0;
+
+    for (auto &it : list) {
+      sum += it;
+    }
+
+    is_avg_outdated = false;
+    avg = sum / list.size();
+
+    return avg;
+  };
+
+  int CountUnder( float threshold ) const
+  {
+    int i = 0;
+
+    for (auto &it : list) {
+      if (it < (int)threshold) {
+        i++;
+      } else {
+        break;
+      }
+    }
+
+    is_under_outdated = false;
+    under = i;
+
+    return under;
+  };
+
+  int CountAbove( float threshold ) const
+  {
+    int i = 0;
+
+    for (auto &it : list) {
+      if (it < (int)threshold) {
+        i++;
+      } else {
+        break;
+      }
+    }
+
+    is_above_outdated = false;
+    above = i;
+
+    return above;
+  };
+
+  void Outdate()
+  {
+    is_max_outdated = true;
+    is_min_outdated = true;
+    is_avg_outdated = true;
+    is_under_outdated = true;
+    is_above_outdated = true;
+  }
+
 public:
   StatisticMultiset() = default;
   ~StatisticMultiset() = default;
 
   // Добавляет число в набор.
-  void AddNum( int num ) {
+  void AddNum( int num )
+  {
     list.insert(num);
+
+    Outdate();
   };
 
   void AddNum( const std::multiset<int>& numbers )
@@ -24,6 +116,8 @@ public:
     for (auto &it : numbers) {
       list.insert(it);
     }
+
+    Outdate();
   };
 
   void AddNum( const std::vector<int>& numbers )
@@ -31,6 +125,8 @@ public:
     for (auto &it : numbers) {
       list.insert(it);
     }
+
+    Outdate();
   };
 
   void AddNum( const std::list<int>& numbers )
@@ -38,6 +134,8 @@ public:
     for (auto &it : numbers) {
       list.insert(it);
     }
+
+    Outdate();
   };
 
   void AddNumsFromFile( const char* filename )
@@ -47,6 +145,8 @@ public:
     {
       list.insert(stoi(line));
     }
+
+    Outdate();
   };
 
   void AddNums( const StatisticMultiset& a_stat_set )
@@ -56,66 +156,38 @@ public:
         list.insert(it);
       }
     }
+
+    Outdate();
   };
 
   // Максимальное число в наборе.
   int GetMax() const
   {
-    std::multiset<int>::const_reverse_iterator it = list.crbegin();;
-
-    return *it;
+    return is_max_outdated ? Max() : max;
   };
 
   // Минимальное число в наборе.
   int GetMin() const
   {
-    std::multiset<int>::const_iterator it = list.cbegin();
-
-    return *it;
+    return is_min_outdated ? Min() : min;
   };
 
   // Среднее арифметическое всего набора.
   float GetAvg() const
   {
-    int sum = 0;
-
-    for (auto it=list.cbegin(); it != list.cend(); ++it) {
-      sum += *it;
-    }
-
-    return sum / list.size();
+    return is_avg_outdated ? Avg() : avg;
   };
 
   // Кол-во чисел в наборе меньше заданного порога.
   int GetCountUnder( float threshold ) const
   {
-    int i = 0;
-
-    for (auto it=list.cbegin(); it != list.cend(); ++it) {
-      if (*it < (int)threshold) {
-        i++;
-      } else {
-        break;
-      }
-    }
-
-    return i;
+    return is_under_outdated ? CountUnder(threshold) : under;
   };
 
   // Кол-во чисел в наборе больше заданного порога.
   int GetCountAbove( float threshold ) const
   {
-    int i = 0;
-
-    for (auto it=list.crbegin(); it != list.crend(); ++it) {
-      if (*it > (int)threshold) {
-        i++;
-      } else {
-        break;
-      }
-    }
-
-    return i;
+    return is_above_outdated ? CountAbove(threshold) : above;
   };
 
   std::multiset<int> Get() const
